@@ -1,0 +1,37 @@
+package com.ruijie.mydemo;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+public class RotateActivity extends BaseActivity {
+	
+	private RelativeLayout rl_layout01;
+	private RelativeLayout rl_layout02;
+	private ViewGroup mContainer;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void setView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setListener() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
