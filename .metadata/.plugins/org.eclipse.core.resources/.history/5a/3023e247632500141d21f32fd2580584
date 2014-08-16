@@ -1,0 +1,26 @@
+package com.ruijie.mydemo;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class CertifyActivity extends BaseActivity {
+	
+	@Override
+	public void setView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setListener() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

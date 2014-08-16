@@ -1,0 +1,21 @@
+package com.ruijie.mydemo;
+
+public class CertifyActivity extends BaseActivity {
+	
+	@Override
+	public void setView() {
+		
+	}
+
+	@Override
+	public void initView() {
+		
+	}
+
+	@Override
+	public void setListener() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

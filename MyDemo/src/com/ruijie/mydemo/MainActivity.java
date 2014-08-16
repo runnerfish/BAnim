@@ -1,6 +1,11 @@
 package com.ruijie.mydemo;
 
 import android.support.v7.app.ActionBarActivity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

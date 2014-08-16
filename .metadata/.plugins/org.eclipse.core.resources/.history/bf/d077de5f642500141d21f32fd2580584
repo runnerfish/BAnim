@@ -1,0 +1,25 @@
+package com.ruijie.mydemo;
+
+import android.widget.TextView;
+
+public class CertifyActivity extends BaseActivity {
+	
+	private TextView textView; 
+	
+	@Override
+	public void setView() {
+		setContentView(R.layout.activity_wifi_certify);
+	}
+
+	@Override
+	public void initView() {
+		textView = (TextView) findViewById(R.id.tv_welcome);
+	}
+
+	@Override
+	public void setListener() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

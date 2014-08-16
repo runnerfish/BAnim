@@ -1,0 +1,28 @@
+package com.ruijie.mydemo;
+
+import android.webkit.WebView;
+import android.widget.TextView;
+
+public class CertifyActivity extends BaseActivity {
+	
+	private TextView textView; 
+	private WebView webView;
+	
+	@Override
+	public void setView() {
+		setContentView(R.layout.activity_wifi_certify);
+	}
+
+	@Override
+	public void initView() {
+		textView = (TextView) findViewById(R.id.tv_welcome);
+		webView = (WebView) findViewById(R.id.wv_certify);
+	}
+
+	@Override
+	public void setListener() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
