@@ -8,7 +8,9 @@
         android:id="@+id/tv_welcome"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:gravity="center"
         android:text="Welcome"
+        android:textSize="30sp"
         android:visibility="gone" />
 
     <WebView
