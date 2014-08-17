@@ -1,0 +1,27 @@
+package com.ruijie.mydemo;
+
+import android.widget.Button;
+import android.widget.TextView;
+
+public class NetworkActivity extends BaseActivity {
+
+	private Button button;
+	private TextView textView;
+	
+	@Override
+	public void setView() {
+		setContentView(R.layout.act_network);
+	}
+
+	@Override
+	public void initView() {
+		button = (Button) findViewById(R.id.btn_request);
+		textView = (TextView) findViewById(R.id.tv_content);
+	}
+
+	@Override
+	public void setListener() {
+		button.setOnClickListener(this);
+	}
+
+}

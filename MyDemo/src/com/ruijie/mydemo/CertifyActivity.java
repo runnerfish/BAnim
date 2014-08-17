@@ -1,5 +1,14 @@
 package com.ruijie.mydemo;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,6 +16,8 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -16,6 +27,8 @@ import android.widget.TextView;
 public class CertifyActivity extends BaseActivity {
 	
 	public static final String URL = "http://tieba.baidu.com/";
+	public static final int WIFI_NOT_ACTIVATED = 0;
+	public static final int WIFI_ACTIVATED = 1;
 	public static final int TYPE_WIFI = 1;
 	public static final int TYPE_MOBILE = 0;
 	public static final int TYPE_NOT_CONNETCED = -1;
@@ -23,6 +36,8 @@ public class CertifyActivity extends BaseActivity {
 	private TextView textView; 
 	private WebView webView;
 	private String currentUrl;
+	private Handler handler;
+	private boolean isWifiActive = false;
 	
 	@Override
 	public void setView() {
@@ -31,23 +46,64 @@ public class CertifyActivity extends BaseActivity {
 
 	@SuppressLint("JavascriptInterface") @Override
 	public void initView() {
-		textView = (TextView) findViewById(R.id.tv_welcome);
-		webView = (WebView) findViewById(R.id.wv_certify);
+		textView = (TextView) findViewById(R.id.tv_welcome);  
+		webView = (WebView) findViewById(R.id.wv_certify);  
 		webView.getSettings().setJavaScriptEnabled(true);  
 		webView.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");  
 		webView.setWebViewClient(new MyWebViewClient());  
+		handler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case WIFI_ACTIVATED:
+					textView.setVisibility(View.VISIBLE);
+					webView.setVisibility(View.GONE);
+					break;
+				case WIFI_NOT_ACTIVATED:
+					AlertDialog.Builder dialog = new AlertDialog.Builder(CertifyActivity.this);
+					dialog.setTitle("提示").setMessage("亲，第一次使用捷伴行需要网络认证");
+					dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							webView.loadUrl(URL);
+						}
+					}).show();
+					break;
+				}
+			}
+		};
 		
-		if (checkInternetConnection() == TYPE_NOT_CONNETCED) {
-			webView.loadUrl("http://www.baidu.com");  
-		}else if (checkInternetConnection() == TYPE_WIFI) {
-			//此阶段只是判断已连接上Wifi
-			//手机若连接上Wifi，无论是否开启GPRS，都强制走Wifi
-			//添加Http请求至百度
-			textView.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-		}else{
+		if (checkInternetConnection() == TYPE_WIFI) {
+			// 此阶段只是判断已连接上Wifi
+			// 手机若连接上Wifi，无论是否开启GPRS，都强制走Wifi
+			// 添加Http请求至百度
+
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					HttpClient httpClient = new DefaultHttpClient();
+					HttpGet httpGet = new HttpGet(URL);
+					try {
+						//判断是否能上网
+						HttpResponse response = httpClient.execute(httpGet);
+						Message msg = new Message();
+						if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+							msg.what = WIFI_ACTIVATED;
+						}else {
+							msg.what = WIFI_NOT_ACTIVATED;
+						}
+						handler.sendMessage(msg);
+					} catch (ClientProtocolException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		} else if(checkInternetConnection() == TYPE_MOBILE){
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-			dialog.setTitle("提示").setMessage("亲，您连接的是移动网络");
+			dialog.setTitle("提示").setMessage("亲，您连接的是移动网络，快去乘坐公交吧");
 			dialog.setPositiveButton("OK", null).show();
 		}
 	}
